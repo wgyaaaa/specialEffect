@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CodeRain</title>
+</head>
+
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<body>
+  <canvas id="canvas-container"></canvas>
+</body>
+
+<script type="text/javascript">
+
+  setInterval(() => {
+    draw()
+  },50)
+
+  // 获取屏幕宽高 赋值给canvas
+  const window_width = window.innerWidth
+  const window_height = window.innerHeight
+  const _canvas = document.getElementById('canvas-container')
+  const _canvas_content = _canvas.getContext('2d')
+  _canvas.width = window_width
+  _canvas.height = window_height
+
+  // 定义列数 宽高
+  const column_w = 20
+  const row_h = 20
+  const columns = Math.floor(window_width/column_w)
+
+  // 设置随机文字颜色
+  const text = 'hello-world'
+  const random = (max,min) => Math.floor(Math.random() * (max -  min + 1))
+  const randomText = () => text[random(text.length - 1,0)] // 获取随机文本
+  const randomColor = () => ['#eaac00','#0088F7','#FE7D0D','#4DCBA7'][random(3,0)]
+
+  const nextChar = new Array(columns).fill(0)
+  const draw = () => {
+    // 擦画布
+    _canvas_content.fillStyle = 'rgba(240, 240, 240, 0.1)'
+    _canvas_content.fillRect(0,0,window_width,window_height)
+
+    for (let i = 0; i < columns; i++) {
+      _canvas_content.fillStyle = randomColor()
+      const char = randomText()
+      const x = column_w * i
+      const y = (nextChar[i] + 1) * row_h
+      if (y > window_height && Math.random() > 0.9) {
+        nextChar[i] = 0
+      } else {
+        nextChar[i]++;
+      }
+      _canvas_content.fillText(char,x,y)
+    }
+  }
+
+
+</script>
+
+</html>
